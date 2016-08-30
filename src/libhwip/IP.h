@@ -1,7 +1,7 @@
 #ifndef HW_IP_H
 #define HW_IP_H
 
-static char *protocols[143] = {
+static const char *protocols[143] = {
         "HOPOPT",
         "ICMP",
         "IGMP",

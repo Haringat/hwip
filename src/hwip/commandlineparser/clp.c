@@ -20,23 +20,70 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static PARAMETER **validArgs = (PARAMETER **)NULL;
+#include <sys/ioctl.h>
+#include <unistd.h>
+
+#define CLP_MAX_ARGUMENTS 40
+
+static PARAMETERTYPE validArgs[CLP_MAX_ARGUMENTS];
 static char *pkgVersion = (char *)NULL;
 static int paramCount = 0;
 
-void addArg(char *argument, char *description) {
+void clp_addArg(char *argument, char *description) {
     paramCount++;
-    if (index(argument, ',')) {
-
+    if(paramCount == CLP_MAX_ARGUMENTS) {
+        // we got more args than we can handle
+        fprintf(stderr, "Too many arguments specified. The cap is at %d\n", CLP_MAX_ARGUMENTS);
+        exit(-1);
+    }
+    char *argCommaIndex = index(argument, ',');
+    if (argCommaIndex != (char *)NULL) {
+        *argCommaIndex = '\0';
+        argCommaIndex++;
+        char shortArg = *(argument + 1); // we don't want the '-' but the character behind it
+        char *spaceIndex = argCommaIndex;
+        int argumentCount = 0;
+        while ((spaceIndex = index(spaceIndex, ' ')) != (char *)NULL) {
+            *spaceIndex = '\0';
+            spaceIndex++;
+            argumentCount++;
+        }
+        char *longArg = argCommaIndex;
+        if (strlen(longArg) > sizeof(PARAMETERTYPE.longForm)) {
+            fprintf(stderr, "The parameter %s is too long to be handled.\nAllowed are max. %d characters.\n", longArg, sizeof(PARAMETERTYPE.longForm));
+            exit(-1);
+        }
+        if (strlen(description) > sizeof(PARAMETERTYPE.description)) {
+            fprintf(stderr, "The description for parameter %s is too long to be handled.\nAllowed are max. %d characters.\n", longArg, sizeof(PARAMETERTYPE.description));
+            exit(-1);
+        }
+        PARAMETERTYPE *par = (PARAMETERTYPE *) malloc(sizeof(PARAMETERTYPE));
+        strcpy(par->description, description);
+        strcpy(par->longForm, longArg);
+        par->shorthandForm = shortArg;
+        par->argumentCount = argumentCount;
+        printf("shortform: %s\n", shortArg);
+        printf("longform:  %s\n", longArg);
     }
 }
 
-void setVersion(char *version) {
-    pkgVersion = version;
+void clp_setVersion(char *version) {
+    pkgVersion = malloc(strlen(version));
+    strcpy(pkgVersion, version);
 }
 
-void printHelp() {
-    for (int i = 0; i < paramCount; i++) {
+void clp_printHelp() {
+    struct winsize w;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+    printf("Version: %s\n", pkgVersion);
+    printf("Arguments:\n");
+    int maxArgWidth;
+    for (int i = 0; i < sizeof(validArgs); i++) {
+        int argWidth = strlen(validArgs[i].argumentCount);
 
+    }
+    printf("-h, --help\t\tprints this information");
+    for (int i = 0; i < sizeof(validArgs); i++) {
+        printf("")
     }
 }

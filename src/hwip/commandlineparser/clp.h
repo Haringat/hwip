@@ -20,13 +20,19 @@
 
 typedef struct {
     char shorthandForm;
-    char *longForm;
-    char *description;
+    char longForm[20];
+    char description[40];
     int argumentCount;
-} PARAMETER;
+} PARAMETERTYPE;
+
+typedef struct {
+    PARAMETERTYPE *parType;
+    char arguments[50][50];
+} GIVENPARAMETER;
 
 void addArg(char *, char *);
 void setVersion(char *);
 void printHelp();
+void parseCommandLine();
 
 #endif //HWIP_CLP_H
