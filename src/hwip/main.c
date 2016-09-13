@@ -15,7 +15,7 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "commandlineparser/clp.h"
+#include "../libclp/clp.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -33,7 +33,31 @@ int main (int argc, char **argv) {
 	bool gui = false;
 	int version = 0;
 	int ttl = 0;
-	for (int i = 0; i < argc; i++) {
+
+    printf("setting version\n");
+    clpInit();
+    printf("assigning params\n");
+    const char *schoolModeAliases[14] = {
+            "--school-mode",
+            "-s",
+    };
+    clpAddArgumentWithAlias(schoolModeAliases, 2, "Execute in school mode.");
+    const char *version
+    clpParse(argc, argv);
+    //clpAddFlag("-s", "Execute in school mode");
+    /*clpAddArg("-s, --school-mode", "Execute in school mode.");
+    printf("1\n");
+    clpAddArg("-i, --ip-version {version}", "The ip version to use. Currently supported is 4. (NYI: 6");
+    printf("2\n");
+    clpAddArg("-t, --time-to-live {ttl}", "The number of routers (or hops) which the package is allowed to pass before it should be dropped.");
+    printf("3\n");
+    clpAddArg("-n, --next-header PROTOCOL", "");*/
+
+    printf("parsing command line\n");
+
+    //GIVENPARAMETER *params = clpParseCommandLine(argc, argv);
+
+	/*for (int i = 0; i < argc; i++) {
 
 		// determine whether to just print version information
 		if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0) {
@@ -50,13 +74,13 @@ int main (int argc, char **argv) {
 			}
 			version = atoi(argv[i + 1]);
 			i++;
-		} else if (strcmp(argv[i], "-ipv4") == 0) {
+		} else if (strcmp(argv[i], "--ipv4") == 0 || strcmp(argv[i], "-4") == 0) {
 			if (version != 0) {
 				fprintf(stderr, "ERROR:multiple version arguments given.");
 				exit(1);
 			}
 			version = 4;
-		} else if (strcmp(argv[i], "-ipv6") == 0) {
+		} else if (strcmp(argv[i], "--ipv6") == 0 || strcmp(argv[i], "-6") == 0) {
 			if (version != 0) {
 				fprintf(stderr, "ERROR:multiple version arguments given.");
 				exit(1);
@@ -65,7 +89,7 @@ int main (int argc, char **argv) {
 		}
 
 		// determine TTL
-		if (strcmp(argv[i], "--time-to-live") == 0 || strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--hop-limit") == 0 || strcmp(argv[i], "-h")) {
+		if (strcmp(argv[i], "--time-to-live") == 0 || strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--hop-limit") == 0) {
 			if (ttl != 0) {
 				fprintf(stderr, "ERROR:multiple TTL/hop limit arguments given.");
 				exit(1);
@@ -88,6 +112,6 @@ int main (int argc, char **argv) {
 
 	if (version == 6) {
 		fprintf(stderr, "ERROR:not implemented yet.");
-	}
+	}*/
 
 }

@@ -15,6 +15,41 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-void printSchoolMode() {
+#include "Argument.hpp"
+
+namespace clp {
+
+    Argument::Argument(std::list<string *> *aliases, string *description, string *defaultValue) {
+        this->aliases = aliases;
+        this->description = description;
+        this->defaultValue = defaultValue;
+    }
+
+    Argument::Argument(string *name, string *description, string *defaultValue) {
+        this->aliases = new list<string *>();
+        this->aliases->push_back(name);
+        this->description = description;
+        this->defaultValue = defaultValue;
+    }
+
+    void Argument::addAlias(string *original, string *alias) {
+        this->aliases->push_back()
+    }
+
+    void Argument::setValue(string *value) {
+        this->value = value;
+    }
+
+    string *Argument::getValue() {
+        return this->value;
+    }
+
+    void Argument::setDefaultValue(string *value) {
+        this->defaultValue = value;
+    }
+
+    list<string *> *Argument::getAliases() {
+        return this->aliases;
+    }
 
 }

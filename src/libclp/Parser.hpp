@@ -15,6 +15,31 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-void printSchoolMode() {
 
+
+#ifndef HWIP_PARSER_HPP
+#define HWIP_PARSER_HPP
+
+#include <list>
+#include <string>
+#include "Argument.hpp"
+
+namespace clp {
+    using namespace std;
+    class Parser {
+
+    private:
+        list<Argument*> *arguments;
+        string *version;
+        string *projectName;
+
+    public:
+        Parser(string *, string *);
+        Parser *addArgument(string *, string *, string * = new string(""));
+        Parser *addArgument(list<string*> *, string *, string * = new string(""));
+        void parse(list<string*> *args);
+    };
 }
+
+
+#endif //HWIP_PARSER_HPP

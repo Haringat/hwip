@@ -15,6 +15,27 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-void printSchoolMode() {
+
+
+#ifndef HWIP_ALIAS_HPP
+#define HWIP_ALIAS_HPP
+
+#include <string>
+
+namespace clp {
+
+    using namespace std;
+
+    class Alias {
+
+    private:
+        string *original;
+        string *alias;
+    public:
+        Alias(string *, string *);
+
+    };
 
 }
+
+#endif //HWIP_ALIAS_HPP

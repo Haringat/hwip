@@ -15,6 +15,41 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-void printSchoolMode() {
+#include "Parser.hpp"
+#include "config.h"
+#include "clp.h"
+#include <string>
+#include <list>
+#include <stdlib.h>
+#include <iostream>
 
+using namespace clp;
+using namespace std;
+
+static Parser *parser = nullptr;
+
+void clpAddArgument(const char *name, const char *description) {
+    parser->addArgument(new string(name), new string(description), new string(""));
+}
+
+void clpAddArgumentWithAlias(const char **aliases, int aliasCount, const char *description) {
+    std::list<string*> *aliasesList = new list<string*>();
+    for (int i = 0; i < aliasCount; i++) {
+        aliasesList->push_back(new string(aliases[i]));
+    }
+    parser->addArgument(aliasesList, new string(description), new string(""));
+}
+
+void clpInit() {
+    if (parser == nullptr) {
+        parser = new Parser(new string(PROJECT_NAME), new string(PROJECT_VERSION));
+    }
+}
+
+void clpParse(int argc, char **argv) {
+    std::list<string*> *argList = new list<string*>();
+    for (int i = 1; i < argc; i++) {
+        argList->push_back(new string(argv[i]));
+    }
+    parser->parse(argList);
 }

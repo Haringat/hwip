@@ -1,5 +1,4 @@
 bin_PROGRAMS=hwip
-hwip_LDADD=../libhwip/libhwip.la ./commandlineparser/libclp.a
+hwip_LDADD=../libhwip/libhwip.la ../libclp/libclp.la
 hwip_CFLAGS=-I../libhwip/
-hwip_SOURCES=main.c commandlineparser/clp.c
-#hwip_DEPENDENCIES=../libhwip/libhwip.la
+hwip_SOURCES=main.c

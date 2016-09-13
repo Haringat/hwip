@@ -1,6 +1,16 @@
 #ifndef HW_IP_H
 #define HW_IP_H
 
+typedef struct {
+
+} IP_PACKET_HEADER;
+
+void printSchoolMode();
+IP_PACKET_HEADER *getSchoolMode();
+void calculateCheckSum(IP_PACKET_HEADER *);
+
+
+
 static const char *protocols[143] = {
         "HOPOPT",
         "ICMP",

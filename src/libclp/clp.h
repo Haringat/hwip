@@ -15,6 +15,24 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-void printSchoolMode() {
+#ifndef HWIP_CLP_H
+#define HWIP_CLP_H
 
-}
+
+#ifdef __cplusplus
+#include "Argument.hpp"
+#include "Parser.hpp"
+
+extern "C" {
+#endif //__cplusplus
+
+void clpAddArgument(const char *, const char *);
+void clpAddArgumentWithAlias(const char **, int, const char *);
+void clpInit();
+void clpParse(int argc, char **argv);
+
+#ifdef __cplusplus
+};
+#endif //__cplusplus
+
+#endif //HWIP_CLP_H

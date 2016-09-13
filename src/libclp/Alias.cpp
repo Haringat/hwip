@@ -15,24 +15,17 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef HWIP_CLP_H
-#define HWIP_CLP_H
 
-typedef struct {
-    char shorthandForm;
-    char longForm[20];
-    char description[40];
-    int argumentCount;
-} PARAMETERTYPE;
 
-typedef struct {
-    PARAMETERTYPE *parType;
-    char arguments[50][50];
-} GIVENPARAMETER;
+#include "Alias.hpp"
 
-void addArg(char *, char *);
-void setVersion(char *);
-void printHelp();
-void parseCommandLine();
+namespace clp {
 
-#endif //HWIP_CLP_H
+    using namespace std;
+
+    Alias::Alias(string *original, string *alias) {
+        
+    }
+
+}
+

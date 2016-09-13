@@ -15,6 +15,33 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-void printSchoolMode() {
 
+
+#ifndef HWIP_ARGUMENT_HPP
+#define HWIP_ARGUMENT_HPP
+
+#include <string>
+#include <list>
+
+namespace clp {
+    using namespace std;
+
+    class Argument {
+    private:
+        string *value;
+        string *defaultValue;
+        list<string*> *aliases;
+        string *description;
+    public:
+        Argument(list<string*> *, string *, string * = new string(""));
+        Argument(string *, string *, string * = new string(""));
+        void setValue(string *);
+        string *getValue();
+        void setDefaultValue(string *);
+        void addAlias(string *, string *);
+        list<string*> *getAliases();
+    };
 }
+
+
+#endif //HWIP_ARGUMENT_HPP

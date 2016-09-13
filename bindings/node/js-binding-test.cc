@@ -1,6 +1,7 @@
 #include <node.h>
 #include <string>
 #include <sstream>
+#include <clp.h>
 
 namespace footest {
 
