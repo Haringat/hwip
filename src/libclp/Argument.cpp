@@ -19,25 +19,17 @@
 
 namespace clp {
 
-    Argument::Argument(std::list<string *> *aliases, string *description, string *defaultValue) {
-        this->aliases = aliases;
+    Argument::Argument(string *name, string *description, string *defaultValue, bool hasValue) {
+        this->name = name;
+        this->hasValue = hasValue;
         this->description = description;
         this->defaultValue = defaultValue;
-    }
-
-    Argument::Argument(string *name, string *description, string *defaultValue) {
-        this->aliases = new list<string *>();
-        this->aliases->push_back(name);
-        this->description = description;
-        this->defaultValue = defaultValue;
-    }
-
-    void Argument::addAlias(string *original, string *alias) {
-        this->aliases->push_back()
+        this->set = false;
     }
 
     void Argument::setValue(string *value) {
         this->value = value;
+        this->set = true;
     }
 
     string *Argument::getValue() {
@@ -48,8 +40,12 @@ namespace clp {
         this->defaultValue = value;
     }
 
-    list<string *> *Argument::getAliases() {
-        return this->aliases;
+    string *Argument::getName() {
+        return this->name;
+    }
+
+    bool Argument::isSet() {
+        return this->set;
     }
 
 }

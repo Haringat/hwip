@@ -34,7 +34,7 @@ JNIEXPORT void JNICALL Java_com_github_haringat_hwip_clp_Parser_parseCLI
  * Signature: ([Ljava/lang/String;Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_com_github_haringat_hwip_clp_Parser_addArg___3Ljava_lang_String_2Ljava_lang_String_2
-        (JNIEnv *, jclass, jobjectArray, jstring) {
+        (JNIEnv *env, jclass Parser, jobjectArray , jstring) {
 }
 
 /*

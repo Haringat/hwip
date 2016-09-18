@@ -32,12 +32,12 @@ namespace clp {
         list<Argument*> *arguments;
         string *version;
         string *projectName;
-
+        bool parsed;
     public:
         Parser(string *, string *);
         Parser *addArgument(string *, string *, string * = new string(""));
-        Parser *addArgument(list<string*> *, string *, string * = new string(""));
-        void parse(list<string*> *args);
+        bool isGiven(string *);
+        void parse(list<string*> *);
     };
 }
 

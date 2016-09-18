@@ -25,11 +25,16 @@
 
 extern "C" {
 #endif //__cplusplus
+#ifndef __cplusplus
+#include <stdbool.h>
+#endif
 
 void clpAddArgument(const char *, const char *);
-void clpAddArgumentWithAlias(const char **, int, const char *);
-void clpInit();
+void clpAddArgumentWithDefaultValue(const char *, const char *, const char *);
+void clpInit(const char *, const char *);
 void clpParse(int argc, char **argv);
+void clpSetVersion(const char *, const char *);
+bool clpGetFlag(const char *);
 
 #ifdef __cplusplus
 };

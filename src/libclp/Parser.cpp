@@ -18,23 +18,16 @@
 #include "Parser.hpp"
 #include <iostream>
 #include <sstream>
+#include <list>
+#include <string>
+#include <regex>
 
 namespace clp {
-
-    #include <list>
-    #include <string>
 
     using namespace std;
 
     Parser *Parser::addArgument(string *name, string *description, string *defaultValue) {
-        this->arguments->push_back(new Argument(name, description, defaultValue));
-        return this;
-    }
-
-    Parser *Parser::addArgument(std::list <string*> *aliases, string *description, string *defaultValue) {
-        typename list<string*>::iterator it = aliases->begin();
-        Argument *arg = new Argument(*it, description, defaultValue);
-        this->arguments->push_back(new Argument(aliases, description, defaultValue));
+        this->arguments->push_back(new Argument(name, description, defaultValue, false));
         return this;
     }
 
@@ -42,24 +35,41 @@ namespace clp {
         this->projectName = projectName;
         this->version = version;
         this->arguments = new list<Argument*>();
+        this->parsed = false;
     }
 
-    void Parser::addAlias(string *original, string *alias)
-
     void Parser::parse(std::list<string*> *args) {
+        if(this->parsed) {
+            return;
+        } else {
+            this->parsed = true;
+        }
         for (typename list<string*>::iterator argIterator = args->begin(); argIterator != args->end(); argIterator++) {
-            for (typename list<Argument*>::iterator i = this->arguments->begin(); i != this->arguments->end() ; i++) {
+            for (typename list<Argument*>::iterator i = this->arguments->begin(); i != this->arguments->end(); i++) {
                 Argument *arg = *i;
-                std::list<string*> *aliases = arg->getAliases();
-                for (typename list<string*>::iterator alias = aliases->begin(); alias != aliases->end(); alias++) {
-                    if (**argIterator == **alias) {
-                        cout << "found " << **alias << endl;
-                    } else {
-                        cout << "did not find " << **alias << " in " << **argIterator << endl;
-                    }
+                string *argName = new string();
+                *argName = (arg->getName()->find(' ')) ? arg->getName()->substr(0, arg->getName()->find(' ')) : *arg->getName();
+                if (arg->getValue() == nullptr) {
+                    arg->setValue(*argIterator);
+                } else {
+                    cerr << "Error: Argument \"" << arg->getName() << "\" was redefined." << endl;
+                    exit(-1);
                 }
             }
         }
+    }
+
+    bool Parser::isGiven(string *flagName) {
+        if (!this->parsed) {
+            return false;
+        }
+        for (typename list<Argument*>::iterator i = this->arguments->begin(); i != this->arguments->end(); i++) {
+            if((*i)->getName()->compare(*flagName)) {
+                cout << (*i)->isSet() << endl;
+                return (*i)->isSet();
+            }
+        }
+        return false;
     }
 
 }

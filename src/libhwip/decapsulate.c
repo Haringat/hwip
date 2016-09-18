@@ -15,3 +15,40 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include <stdlib.h>
+#include <memory.h>
+#include "hwip.h"
+
+IPV4_PACKET *hwipDecodeSchoolMode(const char *ascii) {
+    IPV4_PACKET *ret = malloc(sizeof(IPV4_PACKET));
+    ret->header = malloc(sizeof(IPV4_HEADER));
+    IPV4_HEADER *header = ret->header;
+    char *binstr = malloc(strlen(ascii));
+    strcpy(binstr, ascii);
+    header->version = (uint8_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->ihl = (uint8_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->tos = (uint8_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->totalLength = (uint16_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->identification = (uint16_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->flags = (uint8_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->fragmentOffset = (uint16_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->ttl = (uint8_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->protocol = (uint8_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->checksum = (uint16_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->source = (uint32_t) strtol(binstr, &binstr, 2);
+    binstr++;
+    header->destination = (uint32_t) strtol(binstr, &binstr, 2);
+    return ret;
+}
+
+// 00100 00101 100011000 00000000000000101 10000000000000000 0000 00000000000000 000100000 000000000 00100000101101010 011000011101010000000000101100110 011011111101010000000000101100110

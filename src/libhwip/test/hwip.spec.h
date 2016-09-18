@@ -17,15 +17,23 @@
 
 
 
-#include "Alias.hpp"
+#ifndef HWIP_HWIP_SPEC_H
+#define HWIP_HWIP_SPEC_H
 
-namespace clp {
+#include <stdbool.h>
+#include "../hwip.h"
 
-    using namespace std;
+#ifdef __cplusplus
+extern "C" {
+#endif //__cplusplus
 
-    Alias::Alias(string *original, string *alias) {
-        
-    }
+    bool test_hwipCreateSchoolModePacket();
+    bool test_hwipCalculateIHL();
+    bool test_hwipCalculateChecksum();
+    bool test_hwipVerifyChecksum();
 
-}
+#ifdef __cplusplus
+};
+#endif //__cplusplus
 
+#endif //HWIP_HWIP_SPEC_H

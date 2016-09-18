@@ -28,18 +28,19 @@ namespace clp {
 
     class Argument {
     private:
+        string *name;
         string *value;
         string *defaultValue;
-        list<string*> *aliases;
         string *description;
+        bool hasValue;
+        bool set;
     public:
-        Argument(list<string*> *, string *, string * = new string(""));
-        Argument(string *, string *, string * = new string(""));
+        Argument(string *, string *, string * = new string(""), bool = true);
         void setValue(string *);
         string *getValue();
         void setDefaultValue(string *);
-        void addAlias(string *, string *);
-        list<string*> *getAliases();
+        string *getName();
+        bool isSet();
     };
 }
 
