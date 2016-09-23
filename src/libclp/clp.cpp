@@ -15,7 +15,41 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "hwip.h"
+#include "Parser.hpp"
+#include "config.h"
+#include "clp.h"
+#include <string>
+#include <list>
+#include <stdlib.h>
+#include <iostream>
 
-char *hwipEncodeSchoolMode(IPV4_PACKET *packet_header) {
+using namespace clp;
+using namespace std;
+
+static Parser *parser = nullptr;
+
+void clpAddArgument(const char *name, const char *description) {
+    parser->addArgument(new string(name), new string(description), new string(""));
+}
+
+void clpInit(const char *name, const char *version) {
+    if (parser == nullptr) {
+        parser = new Parser(new string(name), new string(version));
+    }
+}
+
+void clpParse(int argc, char **argv) {
+    std::list<string*> *argList = new list<string*>();
+    for (int i = 1; i < argc; i++) {
+        argList->push_back(new string(argv[i]));
+    }
+    parser->parse(argList);
+}
+
+void clpAddArgumentWithDefaultValue(const char *name, const char *description, const char *defaultValue) {
+    parser->addArgument(new string(name), new string(description), new string(defaultValue));
+}
+
+bool clpGetFlag(const char *flagName) {
+    return parser->isGiven(new string(flagName));
 }

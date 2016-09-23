@@ -15,9 +15,11 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "commandlineparser/clp.h"
+#include "../libclp/clp.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include "config.h"
+#include "../libhwip/hwip.h"
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -33,61 +35,38 @@ int main (int argc, char **argv) {
 	bool gui = false;
 	int version = 0;
 	int ttl = 0;
-	for (int i = 0; i < argc; i++) {
 
-		// determine whether to just print version information
-		if (strcmp(argv[i], "-v") == 0 || strcmp(argv[i], "--version") == 0) {
-			dumpData = true;
-			// we do not need any further information as we will not actually process any data so we can just skip all other arguments
-			break;
-		}
-
-		// determine ip version
-		if (strcmp(argv[i], "--ip-version") == 0 || strcmp(argv[i], "-i") == 0) {
-			if (version != 0) {
-				fprintf(stderr, "ERROR:multiple version arguments given.");
-				exit(1);
-			}
-			version = atoi(argv[i + 1]);
-			i++;
-		} else if (strcmp(argv[i], "-ipv4") == 0) {
-			if (version != 0) {
-				fprintf(stderr, "ERROR:multiple version arguments given.");
-				exit(1);
-			}
-			version = 4;
-		} else if (strcmp(argv[i], "-ipv6") == 0) {
-			if (version != 0) {
-				fprintf(stderr, "ERROR:multiple version arguments given.");
-				exit(1);
-			}
-			version = 6;
-		}
-
-		// determine TTL
-		if (strcmp(argv[i], "--time-to-live") == 0 || strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--hop-limit") == 0 || strcmp(argv[i], "-h")) {
-			if (ttl != 0) {
-				fprintf(stderr, "ERROR:multiple TTL/hop limit arguments given.");
-				exit(1);
-			}
-			if (i == argc - 1) {
-				fprintf(stderr, "ERROR:argument expected after %s", argv[i]);
-				exit(1);
-			}
-			ttl = atoi(argv[i + 1]);
-		}
-
-		// determine next header
-		if (strcmp(argv[i], "--next-header") == 0 || strcmp(argv[i], "-n") == 0) {
-		}
-	}
-
-	if (version != 4 && version != 6) {
-		fprintf(stderr, "ERROR:unknown or no ip version provided. Please specify either version 4 or 6.");
-	}
-
-	if (version == 6) {
-		fprintf(stderr, "ERROR:not implemented yet.");
-	}
+    printf("setting version\n");
+    clpInit(PROJECT_NAME, PROJECT_VERSION);
+    printf("assigning params\n");
+    clpAddArgument("-1", "Check for grade \"1\".");
+    clpAddArgument("-2", "Check for grade \"2\".");
+    clpAddArgument("-3", "Check for grade \"3\".");
+    printf("parsing command line\n");
+    clpParse(argc, argv);
+    //if (clpGetFlag("-3")) {
+    if (strcmp(argv[1], "-3") == 0) {
+        IPV4_PACKET *packet = hwipCreateSchoolModePacket("");
+        dumpIPv4HeaderSchoolMode(packet->header);
+        free(packet->header);
+        free(packet);
+    }
+    //if (clpGetFlag("-2")) {
+    if (strcmp(argv[1], "-2") == 0) {
+        IPV4_PACKET *packet = hwipCreateSchoolModePacket("");
+        dumpIPv4HeaderSchoolModeBinary(packet->header);
+        free(packet->header);
+        free(packet);
+    }
+    //if (clpGetFlag("-1")) {
+    if (strcmp(argv[1], "-1") == 0) {
+        char buf[1000];
+        memset(buf, '\0', 1000 * sizeof(char));
+        fgets(buf, 1000, stdin);
+        IPV4_PACKET *packet = hwipDecodeSchoolMode(buf);
+        dumpIPv4Header(packet->header);
+        free(packet->header);
+        free(packet);
+    }
 
 }

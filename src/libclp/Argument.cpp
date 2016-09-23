@@ -15,7 +15,37 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "hwip.h"
+#include "Argument.hpp"
 
-char *hwipEncodeSchoolMode(IPV4_PACKET *packet_header) {
+namespace clp {
+
+    Argument::Argument(string *name, string *description, string *defaultValue, bool hasValue) {
+        this->name = name;
+        this->hasValue = hasValue;
+        this->description = description;
+        this->defaultValue = defaultValue;
+        this->set = false;
+    }
+
+    void Argument::setValue(string *value) {
+        this->value = value;
+        this->set = true;
+    }
+
+    string *Argument::getValue() {
+        return this->value;
+    }
+
+    void Argument::setDefaultValue(string *value) {
+        this->defaultValue = value;
+    }
+
+    string *Argument::getName() {
+        return this->name;
+    }
+
+    bool Argument::isSet() {
+        return this->set;
+    }
+
 }

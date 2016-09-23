@@ -15,7 +15,29 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "hwip.h"
+#ifndef HWIP_CLP_H
+#define HWIP_CLP_H
 
-char *hwipEncodeSchoolMode(IPV4_PACKET *packet_header) {
-}
+
+#ifdef __cplusplus
+#include "Argument.hpp"
+#include "Parser.hpp"
+
+extern "C" {
+#endif //__cplusplus
+#ifndef __cplusplus
+#include <stdbool.h>
+#endif
+
+void clpAddArgument(const char *, const char *);
+void clpAddArgumentWithDefaultValue(const char *, const char *, const char *);
+void clpInit(const char *, const char *);
+void clpParse(int argc, char **argv);
+void clpSetVersion(const char *, const char *);
+bool clpGetFlag(const char *);
+
+#ifdef __cplusplus
+};
+#endif //__cplusplus
+
+#endif //HWIP_CLP_H

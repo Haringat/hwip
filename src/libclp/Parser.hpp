@@ -15,24 +15,31 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef HWIP_CLP_H
-#define HWIP_CLP_H
 
-typedef struct {
-    char shorthandForm;
-    char longForm[20];
-    char description[40];
-    int argumentCount;
-} PARAMETERTYPE;
 
-typedef struct {
-    PARAMETERTYPE *parType;
-    char arguments[50][50];
-} GIVENPARAMETER;
+#ifndef HWIP_PARSER_HPP
+#define HWIP_PARSER_HPP
 
-void addArg(char *, char *);
-void setVersion(char *);
-void printHelp();
-void parseCommandLine();
+#include <list>
+#include <string>
+#include "Argument.hpp"
 
-#endif //HWIP_CLP_H
+namespace clp {
+    using namespace std;
+    class Parser {
+
+    private:
+        list<Argument*> *arguments;
+        string *version;
+        string *projectName;
+        bool parsed;
+    public:
+        Parser(string *, string *);
+        Parser *addArgument(string *, string *, string * = new string(""));
+        bool isGiven(string *);
+        void parse(list<string*> *);
+    };
+}
+
+
+#endif //HWIP_PARSER_HPP

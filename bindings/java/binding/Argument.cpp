@@ -15,7 +15,5 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "hwip.h"
 
-char *hwipEncodeSchoolMode(IPV4_PACKET *packet_header) {
-}
+

@@ -1,7 +1,50 @@
 #ifndef HW_IP_H
 #define HW_IP_H
 
-static const char *protocols[143] = {
+#include <stdint.h>
+#include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct {
+    uint8_t version: 4;
+    uint8_t ihl: 4;
+    uint8_t tos: 6;
+    uint8_t ECN: 2;
+    uint16_t totalLength: 16;
+    uint16_t identification: 16;
+    uint8_t flags: 3;
+    uint16_t fragmentOffset: 13;
+    uint8_t ttl: 8;
+    uint8_t protocol: 8;
+    uint16_t checksum: 16;
+    uint32_t source: 32;
+    uint32_t destination: 32;
+    uint32_t options[11];
+} IPV4_HEADER;
+
+typedef struct {
+    IPV4_HEADER *header;
+    char *payload;
+} IPV4_PACKET;
+
+char *hwipEncodeSchoolMode(IPV4_PACKET *);
+IPV4_PACKET *hwipDecodeSchoolMode(const char *);
+void hwipCalculateChecksum(IPV4_HEADER *);
+void hwipCalculateHeaderLength(IPV4_HEADER *);
+IPV4_PACKET *hwipDecapsulate(const char *);
+char *hwipEncapsulate(IPV4_PACKET *, const char *);
+IPV4_PACKET *hwipCreateSchoolModePacket(const char *);
+void hwipCalculateIHL(IPV4_HEADER *);
+bool hwipVerifyChecksum(IPV4_HEADER *);
+void dumpIPv4Header(IPV4_HEADER *);
+void dumpIPv4HeaderSchoolMode(IPV4_HEADER *);
+void dumpIPv4HeaderSchoolModeBinary(IPV4_HEADER *header);
+void printBits(const size_t, const void *);
+
+static const char *hwipProtocols[143] = {
         "HOPOPT",
         "ICMP",
         "IGMP",
@@ -146,6 +189,10 @@ static const char *protocols[143] = {
         "WESP",
         "ROHC"
 };
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif
 
