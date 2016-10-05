@@ -243,15 +243,15 @@ void dumpIPv4HeaderSchoolModeBinary(IPV4_HEADER *header) {
     int8_t version = header->version;
     int8_t ihl = header->ihl;
     int8_t tos = header->tos;
-    int16_t totalLength = header->totalLength;
-    int16_t identification = header->identification;
+    int16_t totalLength = toBE16(header->totalLength);
+    int16_t identification = toBE16(header->identification);
     int8_t flags = header->flags;
-    int16_t fragmentOffset = header->fragmentOffset;
+    int16_t fragmentOffset = toBE16(header->fragmentOffset);
     int8_t ttl = header->ttl;
     int8_t protocol = header->protocol;
-    int16_t checksum = header->checksum;
-    int32_t source = header->source;
-    int32_t destination = header->destination;
+    int16_t checksum = toBE16(header->checksum);
+    int32_t source = toBE32(header->source);
+    int32_t destination = toBE32(header->destination);
     printBits(4, &version);
     putchar(' ');
     printBits(4, &ihl);
@@ -277,20 +277,37 @@ void dumpIPv4HeaderSchoolModeBinary(IPV4_HEADER *header) {
     printBits(32, &destination);
 }
 
-// TODO: Modify to support Big Endian
 // based on user295190's answer on http://stackoverflow.com/questions/111928/is-there-a-printf-converter-to-print-in-binary-format#112956
 void printBits(const size_t bitSize, const void *ptr) {
-    uint8_t *b = (uint8_t *) ptr;
-    unsigned char byte;
+
+    size_t byteCount = (size_t) (ceil((double) bitSize / 8.0));
+    void *workCopy = malloc(byteCount);
+    memcpy(workCopy, ptr, byteCount);
 
     size_t border = (size_t) floor((double) bitSize / 8.0);
+    // convert to BE
+
+    uint8_t *b = (uint8_t *) workCopy;
+    uint8_t byte;
 
     for (size_t j = 0; j <= border; j++) {
         int byteLimit = (j == border ? bitSize % 8 : 8) - 1;
         for (int_fast8_t i = (int_fast8_t) byteLimit;i>=0;i--) {
-            byte = (unsigned char) ((*b >> i) & 1);
+            byte = (uint8_t) ((*b >> i) & 1);
             printf("%u", byte);
         }
         b++;
     }
+}
+
+uint32_t toBE32(uint32_t le) {
+    return (u_int32_t) (((le & 0xff000000) >> 24) |
+                        ((le & 0x00ff0000) >>  8) |
+                        ((le & 0x0000ff00) <<  8) |
+                        ((le & 0x000000ff) << 24));
+}
+
+uint16_t toBE16(uint16_t le) {
+    return (uint16_t) (((le & 0xff00) >> 8) |
+                       ((le & 0x00ff) << 8));
 }

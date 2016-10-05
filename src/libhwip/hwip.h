@@ -45,6 +45,8 @@ void dumpIPv4HeaderSchoolMode(IPV4_HEADER *);
 void dumpIPv4HeaderSchoolModeBinary(IPV4_HEADER *header);
 void printBits(const size_t, const void *);
 char *strrep(char *string, char needle, char token);
+uint16_t toBE16(uint16_t);
+uint32_t toBE32(uint32_t);
 
 static const int hwipProtocolCount = 143;
 
