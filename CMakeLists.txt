@@ -39,10 +39,6 @@ add_library(hwip SHARED
         src/libhwip/decapsulate.c
         src/libhwip/encapsulate.c
         src/libhwip/hwip.h src/libhwip/util.c src/libhwip/hwip.spec.c src/utils/stubber.h src/utils/msg.h)
-set_target_properties(hwip
-        PROPERTIES
-            COMPILE_FLAGS "-m32"
-            LINK_FLAGS "-m32")
 add_library(clp SHARED
         src/libclp/Argument.cpp
         src/libclp/Argument.hpp
@@ -50,23 +46,13 @@ add_library(clp SHARED
         src/libclp/Parser.hpp
         src/libclp/clp.h
         src/libclp/clp.cpp src/utils/stubber.h src/utils/utils.h src/utils/msg.h)
-set_target_properties(clp
-        PROPERTIES
-            COMPILE_FLAGS "-m32"
-            LINK_FLAGS "-m32")
 add_executable(hwip_exec
         src/hwip/main.c src/utils/stubber.h src/utils/msg.h)
 set_target_properties(hwip_exec
         PROPERTIES
-            OUTPUT_NAME "hwip"
-            COMPILE_FLAGS "-m32"
-            LINK_FLAGS "-m32")
+            OUTPUT_NAME "hwip")
 add_executable(libhwip_test
         src/libhwip/hwip.spec.c src/utils/stubber.h src/utils/msg.h)
-set_target_properties(libhwip_test
-        PROPERTIES
-            COMPILE_FLAGS "-m32"
-            LINK_FLAGS "-m32")
 
 # we need libmath
 target_link_libraries(hwip m)
