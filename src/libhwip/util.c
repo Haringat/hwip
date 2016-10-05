@@ -143,7 +143,7 @@ void readIPv4Packet(IPV4_PACKET *packet) {
     memset(buffer, '\0', 100);
     printf("Don't fragment(0 or 1): ");
     fflush(stdout);
-    uint_fast8_t dontFragment = (uint8_t) (atoi(fgets(buffer, 3, stdin)) << 1);
+    uint_fast8_t dontFragment = (uint8_t) atoi(fgets(buffer, 3, stdin));
     memset(buffer, '\0', 100);
     if (dontFragment > 1) {
         error("Flag can only contain 0 or 1");
@@ -151,7 +151,7 @@ void readIPv4Packet(IPV4_PACKET *packet) {
     }
     printf("More fragments(0 or 1): ");
     fflush(stdout);
-    uint_fast8_t moreFragments = (uint8_t) (atoi(fgets(buffer, 3, stdin)) << 1);
+    uint_fast8_t moreFragments = (uint8_t) atoi(fgets(buffer, 3, stdin));
     memset(buffer, '\0', 100);
     if (moreFragments > 1) {
         error("Flag can only contain 0 or 1");
@@ -283,8 +283,11 @@ void printBits(const size_t bitSize, const void *ptr) {
     uint8_t *b = (uint8_t *) ptr;
     unsigned char byte;
 
-    for (size_t j = 0; j < ceil((double) bitSize / 8.0); j++) {
-        for (int_fast8_t i = (int_fast8_t) (bitSize % 8);i>=0;i--) {
+    size_t border = (size_t) floor((double) bitSize / 8.0);
+
+    for (size_t j = 0; j <= border; j++) {
+        int byteLimit = (j == border ? bitSize % 8 : 8) - 1;
+        for (int_fast8_t i = (int_fast8_t) byteLimit;i>=0;i--) {
             byte = (unsigned char) ((*b >> i) & 1);
             printf("%u", byte);
         }
