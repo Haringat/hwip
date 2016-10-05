@@ -46,7 +46,12 @@ int main (int argc, char **argv) {
     clpParse(argc, argv);
     //if (clpGetFlag("-3")) {
     if (strcmp(argv[1], "-3") == 0) {
-        IPV4_PACKET *packet = hwipCreateSchoolModePacket("");
+        //IPV4_PACKET *packet = hwipCreateSchoolModePacket("");
+        IPV4_PACKET *packet = malloc(sizeof(IPV4_PACKET));
+        memset(packet, '\0', sizeof(IPV4_PACKET));
+        packet->header = malloc(sizeof(IPV4_HEADER));
+        memset(packet->header, '\0', sizeof(IPV4_HEADER));
+        readIPv4Packet(packet);
         dumpIPv4HeaderSchoolMode(packet->header);
         free(packet->header);
         free(packet);

@@ -15,15 +15,8 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#include "hwip.h"
 
-
-#ifndef HWIP_CONFIG_H
-#define HWIP_CONFIG_H
-
-#cmakedefine PROJECT_VERSION "@PROJECT_VERSION@"
-#cmakedefine PROJECT_NAME "@PROJECT_NAME@"
-#cmakedefine HAVE_LIST_H
-#cmakedefine WIN32
-#cmakedefine UNIX
-
-#endif //HWIP_CONFIG_H
+int main(int argc, char **argv) {
+    return 0;
+}

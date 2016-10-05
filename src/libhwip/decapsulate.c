@@ -17,15 +17,26 @@
 
 #include <stdlib.h>
 #include <memory.h>
+#include <stdio.h>
 #include "hwip.h"
+#include "../utils/stubber.h"
 
 IPV4_PACKET *hwipDecodeSchoolMode(const char *ascii) {
     IPV4_PACKET *ret = malloc(sizeof(IPV4_PACKET));
     ret->header = malloc(sizeof(IPV4_HEADER));
     IPV4_HEADER *header = ret->header;
-    char *binstr = malloc(strlen(ascii));
-    strcpy(binstr, ascii);
+    /*char *binstr = malloc(strlen(ascii));
+    strcpy(binstr, ascii);*/
+    char *binstr = (char *) ascii;
     header->version = (uint8_t) strtol(binstr, &binstr, 2);
+    if (header->version == 6) {
+        printf("ipv6 is not implemented yet.");
+        exit(1);
+    }
+    if (header->version != 4) {
+        printf("invalid version specified");
+        exit(2);
+    }
     binstr++;
     header->ihl = (uint8_t) strtol(binstr, &binstr, 2);
     binstr++;
@@ -51,4 +62,4 @@ IPV4_PACKET *hwipDecodeSchoolMode(const char *ascii) {
     return ret;
 }
 
-// 00100 00101 100011000 00000000000000101 10000000000000000 0000 00000000000000 000100000 000000000 00100000101101010 011000011101010000000000101100110 011011111101010000000000101100110
+// 0100 00101 100011000 00000000000000101 10000000000000000 0000 00000000000000 000100000 000000000 00100000101101010 011000011101010000000000101100110 011011111101010000000000101100110

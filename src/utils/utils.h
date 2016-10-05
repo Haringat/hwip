@@ -17,13 +17,10 @@
 
 
 
-#ifndef HWIP_CONFIG_H
-#define HWIP_CONFIG_H
+#ifndef HWIP_UTILS_H
+#define HWIP_UTILS_H
 
-#cmakedefine PROJECT_VERSION "@PROJECT_VERSION@"
-#cmakedefine PROJECT_NAME "@PROJECT_NAME@"
-#cmakedefine HAVE_LIST_H
-#cmakedefine WIN32
-#cmakedefine UNIX
+#include "stubber.h"
+#include "msg.h"
 
-#endif //HWIP_CONFIG_H
+#endif //HWIP_UTILS_H

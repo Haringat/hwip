@@ -15,15 +15,23 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#ifndef HWIP_STUBBER_H
+#define HWIP_STUBBER_H
 
+#include <stdio.h>
+#include <stdlib.h>
 
-#ifndef HWIP_CONFIG_H
-#define HWIP_CONFIG_H
+/**
+ * defines a stubbed version of a function which will make the linker happy and give the programmer feedback which
+ * functions are still missing an implementation.
+ */
+#define STUB(RETURNVALUE, NAME, ...) RETURNVALUE NAME(__VA_ARGS__) {\
+    fprintf(stderr, "STUB: %s(%s) is not implemented yet.\n", #NAME, #__VA_ARGS__);\
+    if(strcmp(#RETURNVALUE, "void") == 0) {\
+        return;\
+    } else {\
+        return ((RETURNVALUE) NULL);\
+    }\
+}
 
-#cmakedefine PROJECT_VERSION "@PROJECT_VERSION@"
-#cmakedefine PROJECT_NAME "@PROJECT_NAME@"
-#cmakedefine HAVE_LIST_H
-#cmakedefine WIN32
-#cmakedefine UNIX
-
-#endif //HWIP_CONFIG_H
+#endif //HWIP_STUBBER_H

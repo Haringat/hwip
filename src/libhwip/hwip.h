@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "../utils/stubber.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,10 +31,10 @@ typedef struct {
     char *payload;
 } IPV4_PACKET;
 
+void readIPv4Packet(IPV4_PACKET *packet);
 char *hwipEncodeSchoolMode(IPV4_PACKET *);
 IPV4_PACKET *hwipDecodeSchoolMode(const char *);
 void hwipCalculateChecksum(IPV4_HEADER *);
-void hwipCalculateHeaderLength(IPV4_HEADER *);
 IPV4_PACKET *hwipDecapsulate(const char *);
 char *hwipEncapsulate(IPV4_PACKET *, const char *);
 IPV4_PACKET *hwipCreateSchoolModePacket(const char *);
@@ -43,6 +44,9 @@ void dumpIPv4Header(IPV4_HEADER *);
 void dumpIPv4HeaderSchoolMode(IPV4_HEADER *);
 void dumpIPv4HeaderSchoolModeBinary(IPV4_HEADER *header);
 void printBits(const size_t, const void *);
+char *strrep(char *string, char needle, char token);
+
+static const int hwipProtocolCount = 143;
 
 static const char *hwipProtocols[143] = {
         "HOPOPT",

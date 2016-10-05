@@ -17,13 +17,36 @@
 
 
 
-#ifndef HWIP_CONFIG_H
-#define HWIP_CONFIG_H
+#ifndef HWIP_MSG_H
+#define HWIP_MSG_H
 
-#cmakedefine PROJECT_VERSION "@PROJECT_VERSION@"
-#cmakedefine PROJECT_NAME "@PROJECT_NAME@"
-#cmakedefine HAVE_LIST_H
-#cmakedefine WIN32
-#cmakedefine UNIX
+#include <stdio.h>
+#include <time.h>
 
-#endif //HWIP_CONFIG_H
+void error(char *msg);
+void warn(char *msg);
+void logMsg(char *msg);
+void printMessage(char *type, char *msg);
+
+void error(char *msg) {
+    printMessage("ERROR", msg);
+}
+
+void warn(char *msg) {
+    printMessage("WARNING", msg);
+}
+
+void logMsg(char *msg) {
+    printMessage("LOG", msg);
+}
+
+void printMessage(char *type, char *msg) {
+    time_t ct = time((time_t*)NULL);
+
+    fprintf(stderr, "%s: %s\n", type, msg);
+}
+
+//#define ERROR(msg) fprintf(stderr, msg);
+//#define MSG(msg) fprintf(stdout, "ERROR: %s\n", msg);
+
+#endif //HWIP_MSG_H
